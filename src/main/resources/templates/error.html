@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Error</title>
+</head>
+<body>
+<h1>Something went wrong!</h1>
+<p th:text="${message}">Error details</p>
+<div>
+    <a href="/v1/login">Go to Login Page</a>
+    <a href="/v1/register">Go to Registration Page</a>
+    <!-- Diğer sayfalarınıza yönlendirmeler ekleyin -->
+</div>
+</body>
+</html>

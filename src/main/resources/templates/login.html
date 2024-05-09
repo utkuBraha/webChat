@@ -15,11 +15,11 @@
 </head>
 <body>
 <h1>Login</h1>
-<form th:action="@{/login}" method="post">
+<form th:action="@{/v1/login}" method="post">
     Username: <input type="text" name="username" required><br>
     Password: <input type="password" name="password" required><br>
     <input type="submit" value="Login">
 </form>
-<a th:href="@{/register}">Don't have an account? Register here.</a>
+<a th:href="@{/v1/register}">Don't have an account? Register here.</a>
 </body>
 </html>

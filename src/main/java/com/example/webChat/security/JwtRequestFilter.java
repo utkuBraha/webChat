@@ -61,7 +61,8 @@ public class JwtRequestFilter extends OncePerRequestFilter {
 
     private boolean shouldNotFilter(String path, HttpServletResponse response) {
         List<String> excludeUrlPatterns = Arrays.asList("/v1/login","/v1/login/*", "/v1/register", "/v1/register/*", "/v1/index", "/v1/index/*",
-                "/register","/register/*",
+                "/register","/register/*","/messages/.*","/messages/send","/messages/received/.*","/messages/received","/messages",
+                "/messages/send/.*",
 
 
                 "/auth/generateUsername", "/swagger-ui.html", "/swagger-ui/.*", "/v3/api-docs/.*", "/swagger-resources/.*", "/webjars/.*"
