@@ -22,25 +22,13 @@ public class MessageService {
         this.userRepository = userRepository;
     }
 
-    public Message sendMessage(String senderUsername, String receiverUsername, String content) {
-        Optional<User> senderOpt = userRepository.findByUsername(senderUsername);
-        Optional<User> receiverOpt = userRepository.findByUsername(receiverUsername);
 
-        if (!senderOpt.isPresent() || !receiverOpt.isPresent()) {
-            throw new IllegalArgumentException("Sender or receiver username not found.");
-        }
-
-        User sender = senderOpt.get();
-        User receiver = receiverOpt.get();
-
-        Message message = new Message(content, sender, receiver);
-        return save(message);
-    }
 
 
     // This method is to save a message into the database
-    public Message save(Message message) {
-        return messageRepository.save(message);
+    public void save(Message message) {
+        System.out.println("Message saved successfully");
+        messageRepository.save(message);
     }
 
     public List<Message> getReceivedMessages(String username) {

@@ -27,14 +27,18 @@ public class MessageController {
         Optional<User> sender = userRepository.findByUsername(messageDTO.getSenderUsername());
         Optional<User> receiver = userRepository.findByUsername(messageDTO.getReceiverUsername());
 
-        if (sender.isEmpty() || receiver.isEmpty()) {
-            return ResponseEntity.badRequest().body("Invalid sender or receiver username.");
+        if (sender.isEmpty()) {
+            return ResponseEntity.badRequest().body("Sender username not found: " + messageDTO.getSenderUsername());
+        }
+        if (receiver.isEmpty()) {
+            return ResponseEntity.badRequest().body("Receiver username not found: " + messageDTO.getReceiverUsername());
         }
 
-        Message message = new Message(messageDTO.getContent(), sender.orElse(null), receiver.orElse(null));
+        Message message = new Message(messageDTO.getContent(), sender.get(), receiver.get());
         messageService.save(message);
         return ResponseEntity.ok("Message sent successfully.");
     }
+
 
     @GetMapping("/received/{username}")
     public ResponseEntity<?> getReceivedMessages(@PathVariable String username) {

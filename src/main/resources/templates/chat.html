@@ -1,44 +1,48 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html>
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Chat Room</title>
+    <title>Send Message</title>
     <style>
-        body { font-family: Arial, sans-serif; background-color: #f4f4f4; padding: 20px; }
-        #chatbox { background: white; padding: 20px; height: 300px; overflow-y: scroll; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); margin-bottom: 10px; }
-        input[type="text"] { width: calc(100% - 90px); padding: 10px; margin-top: 6px; border: 1px solid #ddd; border-radius: 4px; box-sizing: border-box; }
-        button { width: 80px; height: 52px; background-color: #4CAF50; color: white; padding: 12px 20px; border: none; border-radius: 4px; cursor: pointer; margin-left: 10px; }
-        button:hover { background-color: #45a049; }
+        input, button { padding: 10px; margin: 5px; }
     </style>
 </head>
 <body>
-<h1>Welcome to the Chat Room</h1>
-<div id="chatbox">
-    <p>Message history will appear here...</p>
-</div>
-<input type="text" id="usermsg" placeholder="Type your message here...">
-<button onclick="sendMessage()">Send</button>
+<h1>Send a Message</h1>
+<form id="messageForm">
+    Your Username: <input type="text" id="senderUsername" placeholder="Enter your username" required><br>
+    To: <input type="text" id="receiverUsername" placeholder="Enter receiver's username" required><br>
+    Message: <textarea id="messageContent" placeholder="Type your message here..." required></textarea><br>
+    <button type="button" onclick="sendMessage()">Send Message</button>
+</form>
 
 <script>
     function sendMessage() {
-        const usermsg = document.getElementById("usermsg").value;
-        fetch('/messages/send', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({ content: usermsg })
-        })
-            .then(response => response.json())
-            .then(data => {
-                console.log('Success:', data);
-                document.getElementById("chatbox").innerHTML += `<p>${usermsg}</p>`; // Display message in chatbox
-                document.getElementById("usermsg").value = ''; // Clear input after sending
-            })
-            .catch((error) => {
-                console.error('Error:', error);
-            });
+        var senderUsername = document.getElementById("senderUsername").value;
+        var receiverUsername = document.getElementById("receiverUsername").value;
+        var messageContent = document.getElementById("messageContent").value;
+
+        var xhr = new XMLHttpRequest();
+        xhr.open("POST", "/messages/send", true);
+        xhr.setRequestHeader("Content-Type", "application/json");
+
+        xhr.onreadystatechange = function() {
+            if (xhr.readyState === 4) {
+                if(xhr.status === 200) {
+                    alert("Message sent successfully!");
+                } else {
+                    alert("Error sending message: " + xhr.responseText);
+                }
+            }
+        };
+
+        var message = {
+            senderUsername: senderUsername,  // User input
+            receiverUsername: receiverUsername,
+            content: messageContent
+        };
+
+        xhr.send(JSON.stringify(message));
     }
 </script>
 </body>
