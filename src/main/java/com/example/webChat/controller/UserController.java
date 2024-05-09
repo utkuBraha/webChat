@@ -22,6 +22,8 @@ public class UserController {
         this.userService = userService;
         this.userRepository = userRepository;
     }
+    //http://localhost:8085/v1/register kayit yap
+    //http://localhost:8085/v1/login login yap
 
     //register işlem sayfasi
     @GetMapping("/register")
