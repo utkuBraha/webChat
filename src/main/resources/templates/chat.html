@@ -4,21 +4,27 @@
     <meta charset="UTF-8">
     <title>Send Message</title>
     <style>
-        input, button { padding: 10px; margin: 5px; }
+        input, button, textarea { padding: 10px; margin: 5px; }
+        .message { border: 1px solid #ccc; padding: 10px; margin-bottom: 10px; border-radius: 5px; }
     </style>
 </head>
 <body>
 <h1>Send a Message</h1>
 <form id="messageForm">
-    Your Username: <input type="text" id="senderUsername" placeholder="Enter your username" required><br>
     To: <input type="text" id="receiverUsername" placeholder="Enter receiver's username" required><br>
     Message: <textarea id="messageContent" placeholder="Type your message here..." required></textarea><br>
     <button type="button" onclick="sendMessage()">Send Message</button>
 </form>
 
+<h2>Received Messages</h2>
+<div id="receivedMessages"></div>
+
 <script>
+    document.addEventListener("DOMContentLoaded", function() {
+        loadReceivedMessages();
+    });
+
     function sendMessage() {
-        var senderUsername = document.getElementById("senderUsername").value;
         var receiverUsername = document.getElementById("receiverUsername").value;
         var messageContent = document.getElementById("messageContent").value;
 
@@ -30,6 +36,7 @@
             if (xhr.readyState === 4) {
                 if(xhr.status === 200) {
                     alert("Message sent successfully!");
+                    loadReceivedMessages(); // Mesaj gönderildikten sonra mesajları tekrar yükle
                 } else {
                     alert("Error sending message: " + xhr.responseText);
                 }
@@ -37,12 +44,40 @@
         };
 
         var message = {
-            senderUsername: senderUsername,  // User input
             receiverUsername: receiverUsername,
             content: messageContent
         };
 
         xhr.send(JSON.stringify(message));
+    }
+
+    function loadReceivedMessages() {
+        var xhr = new XMLHttpRequest();
+        xhr.open("GET", "/messages/received", true);
+
+        xhr.onreadystatechange = function() {
+            if (xhr.readyState === 4 && xhr.status === 200) {
+                var messages = JSON.parse(xhr.responseText);
+                var messagesDiv = document.getElementById("receivedMessages");
+                messagesDiv.innerHTML = ""; // Eski mesajları temizle
+
+                messages.forEach(function(message) {
+                    var messageDiv = document.createElement("div");
+                    messageDiv.className = "message";
+                    messageDiv.innerHTML = "<strong>From: </strong>" + message.receiverUsername + "<br><strong>Message: </strong>" + message.senderUsername
+                    var deleteBtn = document.createElement("button");
+                    deleteBtn.className = "delete-btn";
+                    deleteBtn.innerHTML = "X";
+                    deleteBtn.onclick = function() {
+                        messagesDiv.removeChild(messageDiv);
+                    };
+                    messageDiv.appendChild(deleteBtn);
+                    messagesDiv.appendChild(messageDiv);
+                });
+            }
+        };
+
+        xhr.send();
     }
 </script>
 </body>

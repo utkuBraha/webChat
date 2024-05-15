@@ -57,6 +57,7 @@ public class UserController {
     public ModelAndView login(@RequestParam String username, @RequestParam String password, HttpSession session) {
         try {
             String token = userService.authenticate(username, password);
+            session.setAttribute("username", username); // Kullanıcı adını session'a kaydet
             session.setAttribute("token", token); // Token'ı session'a kaydet
             return new ModelAndView("chat"); // Chat sayfasına yönlendir
         } catch (UsernameNotFoundException e) {
