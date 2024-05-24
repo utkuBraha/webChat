@@ -3,9 +3,6 @@ package com.example.webChat.controller;
 import com.example.webChat.model.User;
 import com.example.webChat.repository.UserRepository;
 import com.example.webChat.service.UserService;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import jakarta.servlet.http.HttpSession;
@@ -45,13 +42,11 @@ public class UserController {
         }
     }
 
-
     // Login işlem sayfasi
     @GetMapping("/login")
     public ModelAndView showLoginForm() {
         return new ModelAndView("login");
     }
-
 
     @PostMapping("/login")
     public ModelAndView login(@RequestParam String username, @RequestParam String password, HttpSession session) {
@@ -119,11 +114,6 @@ public class UserController {
             return ResponseEntity.badRequest().body("Error: " + e.getMessage());
         }
     }
-
-
-
-
-
     @PostMapping("/login")
     public ResponseEntity<String> login(@RequestParam String username, @RequestParam String password, HttpSession session) {
         try {

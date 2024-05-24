@@ -2,15 +2,60 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Error</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #1f1c2c, #928dab);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            color: #fff;
+            text-align: center;
+        }
+        .container {
+            background: rgba(0, 0, 0, 0.8);
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+            max-width: 500px;
+            width: 100%;
+            backdrop-filter: blur(10px);
+        }
+        h1 {
+            color: #ff6b6b;
+            margin-bottom: 24px;
+        }
+        p {
+            color: #fff;
+            margin-bottom: 24px;
+        }
+        a {
+            display: inline-block;
+            margin: 10px;
+            padding: 12px 20px;
+            background-color: #4CAF50;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+        }
+        a:hover {
+            background-color: #45a049;
+        }
+    </style>
 </head>
 <body>
-<h1>Something went wrong!</h1>
-<p th:text="${message}">Error details</p>
-<div>
-    <a href="/v1/login">Go to Login Page</a>
-    <a href="/v1/register">Go to Registration Page</a>
-    <!-- Diğer sayfalarınıza yönlendirmeler ekleyin -->
+<div class="container">
+    <h1>Something went wrong!</h1>
+    <p th:text="${message}">Error details</p>
+    <div>
+        <a th:href="@{/v1/login}">Go to Login Page</a>
+        <a th:href="@{/v1/register}">Go to Registration Page</a>
+    </div>
 </div>
 </body>
 </html>

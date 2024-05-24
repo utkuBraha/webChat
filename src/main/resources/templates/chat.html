@@ -2,26 +2,107 @@
 <html>
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Send Message</title>
     <style>
-        input, button, textarea { padding: 10px; margin: 5px; }
-        .message { border: 1px solid #ccc; padding: 10px; margin-bottom: 10px; border-radius: 5px; }
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #1f1c2c, #928dab);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+            margin: 0;
+            color: #fff;
+        }
+        h1, h2 {
+            text-align: center;
+            color: #fff;
+        }
+        form {
+            background: rgba(0, 0, 0, 0.8);
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+            max-width: 500px;
+            width: 100%;
+            backdrop-filter: blur(10px);
+            margin-bottom: 20px;
+        }
+        input, button, textarea {
+            width: 100%;
+            padding: 12px;
+            margin: 10px 0;
+            border: none;
+            border-radius: 5px;
+            box-sizing: border-box;
+        }
+        input, textarea {
+            background: rgba(255, 255, 255, 0.1);
+            color: #fff;
+        }
+        input::placeholder, textarea::placeholder {
+            color: #ddd;
+        }
+        button {
+            background-color: #4CAF50;
+            color: white;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        .message-container {
+            max-width: 500px;
+            width: 100%;
+            margin-bottom: 20px;
+        }
+        .message {
+            background: rgba(0, 0, 0, 0.8);
+            padding: 10px;
+            margin-bottom: 10px;
+            border-radius: 5px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+            color: #fff;
+        }
+        .message.sent {
+            background: rgba(255, 255, 255, 0.1);
+            color: #fff;
+        }
+        .delete-btn {
+            background: #ff6b6b;
+            color: #fff;
+            border: none;
+            padding: 5px 10px;
+            margin-top: 10px;
+            cursor: pointer;
+            border-radius: 5px;
+            float: right;
+        }
+        .delete-btn:hover {
+            background: #ff3b3b;
+        }
     </style>
 </head>
 <body>
 <h1>Send a Message</h1>
 <form id="messageForm">
-    To: <input type="text" id="receiverUsername" placeholder="Enter receiver's username" required><br>
-    Message: <textarea id="messageContent" placeholder="Type your message here..." required></textarea><br>
+    <input type="text" id="receiverUsername" placeholder="Enter receiver's username" required>
+    <textarea id="messageContent" placeholder="Type your message here..." required></textarea>
     <button type="button" onclick="sendMessage()">Send Message</button>
 </form>
 
 <h2>Received Messages</h2>
-<div id="receivedMessages"></div>
+<div id="receivedMessages" class="message-container"></div>
+
+<h2>Sent Messages</h2>
+<div id="sentMessages" class="message-container"></div>
 
 <script>
     document.addEventListener("DOMContentLoaded", function() {
         loadReceivedMessages();
+        loadSentMessages();
     });
 
     function sendMessage() {
@@ -36,7 +117,7 @@
             if (xhr.readyState === 4) {
                 if(xhr.status === 200) {
                     alert("Message sent successfully!");
-                    loadReceivedMessages(); // Mesaj gönderildikten sonra mesajları tekrar yükle
+                    loadSentMessages();
                 } else {
                     alert("Error sending message: " + xhr.responseText);
                 }
@@ -59,12 +140,12 @@
             if (xhr.readyState === 4 && xhr.status === 200) {
                 var messages = JSON.parse(xhr.responseText);
                 var messagesDiv = document.getElementById("receivedMessages");
-                messagesDiv.innerHTML = ""; // Eski mesajları temizle
+                messagesDiv.innerHTML = "";
 
                 messages.forEach(function(message) {
                     var messageDiv = document.createElement("div");
                     messageDiv.className = "message";
-                    messageDiv.innerHTML = "<strong>From: </strong>" + message.receiverUsername + "<br><strong>Message: </strong>" + message.senderUsername
+                    messageDiv.innerHTML = "<strong>From: </strong>" + message.receiverUsername+ "<br><strong>Message: </strong>" + message.senderUsername ;
                     var deleteBtn = document.createElement("button");
                     deleteBtn.className = "delete-btn";
                     deleteBtn.innerHTML = "X";
@@ -74,11 +155,13 @@
                     messageDiv.appendChild(deleteBtn);
                     messagesDiv.appendChild(messageDiv);
                 });
+                
             }
         };
 
         xhr.send();
     }
+
 </script>
 </body>
 </html>

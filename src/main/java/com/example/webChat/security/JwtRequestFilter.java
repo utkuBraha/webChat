@@ -49,7 +49,7 @@ public class JwtRequestFilter extends OncePerRequestFilter {
                     // Continue with the chain
                     chain.doFilter(request, response);
                 } else {
-                    // The token is valid, but does not contain userId and/or deviceId
+                    // The token is valid, but it is missing required claims
                     response.sendError(HttpServletResponse.SC_FORBIDDEN, "The JWT token is missing required claims.");
                 }
             } else {

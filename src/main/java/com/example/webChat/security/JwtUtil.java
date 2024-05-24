@@ -91,5 +91,4 @@ public class JwtUtil {
         claims.put("roles", roles);
         return createShortLivedToken(claims);
     }
-
 }
